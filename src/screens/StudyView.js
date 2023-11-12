@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions , SafeAreaView, Alert} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions , SafeAreaView, Alert} from 'react-native';
 import React, {useContext, useState, useEffect} from 'react';
 import { TopicContext } from '../context/topicContext';
 import config from '../../config';
@@ -34,18 +34,32 @@ const StudyView = () => {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
-
+  
     const currentQuestion = questionList[currentQuestionIndex];
+
+    const shuffle = (array) => {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
     useEffect(() => {
       const getData = async () => {
         try {
-          // console.log(id, accessToken);
           let response = await axios.get(`http://${IPV4_ADDRESS}:${PORT}/api/v1/lesson/topic/${id}`, {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
           });
-          setQuestionList(response.data.unlearnedLessons);
+          const questions = response.data
+          for(const question of questions){
+            shuffle(question.lesson.answers)
+          }
+          setQuestionList(questions);
+          // console.log("response.data",response.data)
+          // console.log('data', data)
         } catch (error) {
           console.log('Error in getData func', error);
         }
@@ -54,27 +68,41 @@ const StudyView = () => {
       getData();
     }, []);
 
-
     const onPressCheck = () => {
       if (selectedAnswer !== null) {
         const isCorrect = selectedAnswer.isCorrect;
         setIsAnswerCorrect(isCorrect);
         setShowAlert(true);
+      }else{
+        onPressContinue()
+        setFinalResult(null)
       }
     };
-  
+    const resetIndex = () => {
+      try {
+        if ( currentQuestionIndex === questionList.length) {
+          setCurrentQuestionIndex(0)
+        }
+      } catch (error) {
+        console.log('Error in resetIndex func', error);
+      }
+    }
     const onPressNext = () => {
       try {
         if ( currentQuestionIndex < questionList.length - 1) {
           setCurrentQuestionIndex(currentQuestionIndex + 1);
           setAnswerChecked(false);
           setShowAlert(false);
+          setIsCheckButtonEnabled(false)
+        }else{
+          Alert.alert('You are finish all the question')
+          resetIndex()
         }
       } catch (error) {
         console.log('Error in onPressNext func', error);
       }
     };
-
+ 
     const handleAnswerSelection = (answer) => {
       const isCurrentlySelected = selectedAnswer === answer;
       const newSelectedAnswer = isCurrentlySelected ? null : answer;
@@ -100,11 +128,14 @@ const StudyView = () => {
       }
       );
         onPressNext(); 
+
       } catch (error) {
         console.error('Error creating question progress', error);
       }
     };
-    
+
+
+  
     const renderQuestionTypeComponent = () => {
       try {
         if (currentQuestion && currentQuestion.lesson) {
@@ -148,11 +179,8 @@ const StudyView = () => {
               );
             case 'Speaking':
               return (
-                <SpeakingQuestion 
-                question={currentQuestion.lesson.question}
-                answers={currentQuestion.lesson.answers}
-                selectedAnswer={selectedAnswer}
-                onAnswerSelection={handleAnswerSelection}
+                <SpeakingQuestion
+                  question={currentQuestion.lesson.question}  
                 />
               );
             default:
@@ -165,15 +193,31 @@ const StudyView = () => {
         console.log('Error in renderQuestionTypeComponent func', error);
       }
     };
-  
+   let type = currentQuestion ? currentQuestion.lesson.type : []
     return (
       <SafeAreaView style={styles.container}>
-        <Header onPress={() => navigation.goBack()} />
+        <Header onPress={() => navigation.navigate('LearningLesson')} />
         <View style={styles.contentContainer}>
           {renderQuestionTypeComponent()}
         </View>
-        {/* <View style={styles.buttonContainer}>
-          <TouchableOpacity
+        <View style={styles.buttonContainer}>
+          {              
+              type === 'Speaking' ?
+              (<TouchableOpacity
+                style={[
+                  styles.checkButton,
+                  {
+                    backgroundColor: isCheckButtonEnabled ? COLORS.Yellow1 : 'gray',
+                  },
+                ]}
+                onPress={onPressCheck}
+                disabled={!isCheckButtonEnabled}
+              >
+                <Text style={styles.textButton}>Check</Text>
+              </TouchableOpacity>) 
+              :
+              (
+                <TouchableOpacity
             style={[
               styles.checkButton,
               {
@@ -185,7 +229,10 @@ const StudyView = () => {
           >
             <Text style={styles.textButton}>Check</Text>
           </TouchableOpacity>
-        </View> */}
+              )
+          }
+          
+        </View>
         <CustomAlert
             isVisible={showAlert}
             isCorrect={isAnswerCorrect}

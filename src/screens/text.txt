@@ -1,0 +1,14 @@
+//   const handleComparison = () => {
+//     const normalizedUserInputArray = userInput.map(normalizeString);
+//     const normalizedRightAnswer = rightAnswer.map(normalizeString);
+//     const comparisonResult = normalizedUserInputArray.map((word, index) => {
+//       return {
+//         word,
+//         correct: normalizedRightAnswer[index] === word,
+//       };
+//     });
+//     setFinalResult(comparisonResult);
+//   };
+//   const handleComparisonButtonPress = () => {
+//     handleComparison();
+// };

@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome/'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { TopicContext } from '../context/topicContext';
 import config from '../../config';
+import { useIsFocused } from '@react-navigation/native';
 
 const LearningLesson = () => {
     const [topics, setTopics] = useState([]);
@@ -16,6 +17,8 @@ const LearningLesson = () => {
     const {setTopic} = useContext(TopicContext)
     const accessToken = state.accessToken
     const navigation = useNavigation();
+    const isFocused = useIsFocused();
+
     const openDrawer = () => {
         navigation.dispatch(DrawerActions.openDrawer());
 
@@ -24,6 +27,8 @@ const LearningLesson = () => {
     const IPV4_ADDRESS = config.extra.IPV4
     const PORT = config.extra.PORT
     useEffect(() => {
+        if (isFocused) {
+
          const getTopicData = async () => {
             try {
                 let response = await axios.get(`http://${IPV4_ADDRESS}:${PORT}/api/v1/topic`, {
@@ -36,10 +41,12 @@ const LearningLesson = () => {
                 console.log('Error in getTopicData func', error);
             }
         }
+    
         if (accessToken) {
          getTopicData();
         }
-    }, []);
+        }
+    }, [isFocused]);
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
@@ -56,7 +63,7 @@ const LearningLesson = () => {
                             const originalPath = t.topic.avatar.url
                             const updatedPath = originalPath.replace(/\\/g, "/");
                             const processNumber = parseFloat(t.progress)
-                            const roundedNumber = processNumber.toFixed(2)
+                            const roundedNumber = processNumber*100
                             return (
                             
                                 <TouchableOpacity 
@@ -96,7 +103,7 @@ const LearningLesson = () => {
                                         ) : (
                                             <Text style={styles.processText}>Progress: 0</Text>
                                         )}
-                                        <ProgressBar progress={processNumber/10} color={COLORS.LightBlack}  borderColor={COLORS.Grey} width={200} />
+                                        <ProgressBar progress={roundedNumber/100} color={COLORS.LightBlack}  borderColor={COLORS.Grey} width={200} />
 
                                     </View>
                                 </TouchableOpacity>

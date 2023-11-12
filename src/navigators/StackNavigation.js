@@ -7,7 +7,9 @@ const Stack = createStackNavigator();
 
 const StackNavigation = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{
+      gestureEnabled: true
+    }}>
       <Stack.Screen
         name="WelcomeScreen"
         component={WelcomeScreen}
