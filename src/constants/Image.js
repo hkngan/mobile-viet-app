@@ -32,6 +32,7 @@ export default {
     regis: require('../../assets/image/regis.png'),
     true: require('../../assets/image/good.png'),
     false: require('../../assets/image/angry.png'),
-    logo: require('../../assets/image/readingcat.png')
+    logo: require('../../assets/image/readingcat.png'),
+    champion: require('../../assets/image/champion.png')
 
 }

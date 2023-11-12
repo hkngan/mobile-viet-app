@@ -18,8 +18,14 @@ const AuthProvider = ({children}) => {
         }
         loadStorageData()
     }, [])
+    const logout = () => {
+        AsyncStorage.removeItem('@auth');
+        setState({
+            accessToken: '',
+        });
+    };
     return (
-        <AuthContext.Provider value={{state, setState}}>
+        <AuthContext.Provider value={{state, setState, logout}}>
             {children}
         </AuthContext.Provider>
     )

@@ -3,15 +3,23 @@ import React, {useState, useEffect} from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { COLORS, FONTSIZE, SPACING } from '../themes/themes'
 import appConfig from '../../config';
-
-
+import Tts from 'react-native-tts';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faVolumeHigh } from '@fortawesome/free-solid-svg-icons';
 const ImageQuestion = ({ question, answers, selectedAnswer, onAnswerSelection }) => {
   const IPV4_ADDRESS = appConfig.extra.IPV4
   const PORT = appConfig.extra.PORT
-  
+  Tts.setDefaultLanguage('vi-VN');
+
   return (
     <View style={styles.container}>
+            <View style={styles.questionContainer}>
       <Text style={styles.questionText}>{question}</Text>
+      <TouchableOpacity
+          onPress={() => Tts.speak(question)}>
+          <FontAwesomeIcon icon={faVolumeHigh} size={20} color={COLORS.Black} />
+        </TouchableOpacity>
+        </View>
       <View style={styles.answerContainer}>
         {answers.map((answer, index) => {
           const originalPath = answer.attachment.url;
@@ -72,6 +80,11 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: SPACING.space_10,
     alignSelf: 'center'
-  }
+  },
+  questionContainer:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
 })
 

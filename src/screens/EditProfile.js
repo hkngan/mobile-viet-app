@@ -179,37 +179,39 @@ const EditProfile = () => {
   const handleUpdate = async () => {
     try {
       setShowAlert(true)
-    //   const response = await axios.post(
-    //     `http://${IPV4}:${PORT}/api/v1/file/upload/single`,
-    //     userAvatar,
-    //     {
-    //       headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //       },
-    //     },
-    //   );
-    //   const avatar = response.data.id;
+      // const response = await axios.post(
+      //   `http://${IPV4}:${PORT}/api/v1/file/upload/single`,
+      //   userAvatar,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'multipart/form-data',
+      //     },
+      //   },
+      // );
+      // const avatar = response.data.id;
+      // console.log(avatar)
       // console.log( userInfo.fullName, userInfo.phone, selectedDate, checkedGender, selectNational, userInfo.password)
 
       // const {data} = await axios.put(
-      //   `http://${IPV4}:${PORT}/api/v1/account/me/info`,
+      //   `http://${IPV4}:${PORT}/api/v1/account/me/info/hndb`,
       //   {
       //       headers: {
       //         Authorization: `Bearer ${accessToken}`,
       //       },
       //     },
-      //   {
-      //     fullName: userInfo.fullName,
-      //     phone: userInfo.phone,
-      //     dob: selectedDate,
-      //     gender: checkedGender,
-      //     nationality: selectNational,
-      //     password: userInfo.password,
-      //   });
+      //     {
+      //       fullName: userInfo.fullName,
+      //       phone: userInfo.phone,
+      //       dob: selectedDate,
+      //       gender: checkedGender,
+      //       nationality: selectNational,
+      //       password: userInfo.password,
+      //     }
+      //   );
       // console.log('Thành công', data);
 
     } catch (error) {
-      console.log('Error in handleRegister func', error);
+      console.log('Error in handleUpdate func', error);
     }
   };
   const originalPath = userInfo.avatar.url;

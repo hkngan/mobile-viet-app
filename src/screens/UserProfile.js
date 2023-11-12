@@ -7,11 +7,10 @@ import { COLORS, FONTSIZE, SPACING } from '../themes/themes'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faEdit } from '@fortawesome/free-solid-svg-icons'
 import { useNavigation } from '@react-navigation/native'
-import { useIsFocused } from '@react-navigation/native';
 
 const UserProfile = () => {
   const navigation =  useNavigation()
-
+  const {logout} = useContext(AuthContext)
   const IPV4 = config.extra.IPV4
   const PORT = config.extra.PORT
   const {state} = useContext(AuthContext);
@@ -35,7 +34,7 @@ const UserProfile = () => {
       getData()
   }, [])
  
-console.log(userInfo)
+// console.log(userInfo)
 if (userInfo.length === 0) {
   return (
 
@@ -49,6 +48,16 @@ if (userInfo.length === 0) {
 const originalPath = userInfo.avatar.url;
 const updatedPath = originalPath.replace(/\\/g, "/");
 // console.log(`http://${IPV4}:${PORT}/${updatedPath}`)
+
+const handleLogout = () => {
+  try {
+    logout()
+    // console.log('profilescreen ', accessToken)
+    navigation.navigate('WelcomeScreen')
+  } catch (error) {
+    console.log('Error in handleLogout', error)
+  }
+}
   return (
     <View style={styles.container}>
       <View style={styles.profileContainer}>
@@ -62,7 +71,7 @@ const updatedPath = originalPath.replace(/\\/g, "/");
               <FontAwesomeIcon icon={faEdit} size={25} color={COLORS.Black}/>
             </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.buttonContainer} >
+            <TouchableOpacity style={styles.buttonContainer}  onPress={handleLogout}>
               <Text style={styles.buttonText}>log out</Text>
             </TouchableOpacity>
       </View>

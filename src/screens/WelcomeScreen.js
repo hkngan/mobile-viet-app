@@ -1,13 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { StyleSheet, Text, SafeAreaView, View, Dimensions, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { image } from '../constants';
 import { UIButton } from '../components';
 import { SPACING } from '../themes/themes';
+import { AuthContext } from '../context/authContext';
 
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
 const WelcomeScreen = () => {
+    const {state} = useContext(AuthContext);
+    // const accessToken = state.accessToken
+    // console.log('WelcomeScreen accessToken:', accessToken)
     const navigation = useNavigation();
     const navigateToLoginScreen = () => {
         navigation.navigate('LoginStack');

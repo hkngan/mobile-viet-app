@@ -15,15 +15,13 @@ import Voice from '@react-native-voice/voice';
 
 const SpeakingQuestion = ({
   question,
-  answers,
-  selectedAnswer,
-  onAnswerSelection,
+  
 }) => {
   Tts.setDefaultLanguage('vi-VN');
 
   let [recording, setRecording] = useState(false);
   let [result, setResult] = useState();
-  let [finalResult, setFinalResult] = useState();
+  let [finalResult, setFinalResult] = useState(null);
 
   const speechStartHandler = e => {
     console.log('speech start event', e);
@@ -53,43 +51,67 @@ const SpeakingQuestion = ({
   const stopRecording = async () => {
     try {
       await Voice.stop()
-      setRecording(false)
-      handleComparison()
+     setRecording(false)
+     console.log('stopRecording', userInput)
+
     } catch (error) {
       console.log('Error in startRecording function', error)
     }
   }
+
   
   useEffect(() => {
     Voice.onSpeechStart = speechStartHandler
     Voice.onSpeechEnd = speechEndHandler
     Voice.onSpeechResults = speechResultsHandler
     Voice.onSpeechError = speechErrorHandler
-
     return () => {
       Voice.destroy().then(Voice.removeAllListeners)
     }
   }, []);
 
-  const rightAnswer = question.split(' ');
-  console.log(rightAnswer)
-  
-  const userInput = result ? result.split(' ') : [];
-  console.log(userInput)
+  useEffect(() => {
+    const handleComparison = async () => {
+      const rightAnswer = question.split(' ');
+      const userInput = result ? result.split(' ') : [];
+      const normalizeString = (str) => str.toLowerCase();
 
-  const normalizeString = (str) => str.toLowerCase();
+      const normalizedUserInputArray = userInput.map(normalizeString);
+      const normalizedRightAnswer = rightAnswer.map(normalizeString);
 
-  const handleComparison = () => {
-    const normalizedUserInputArray = userInput.map(normalizeString);
-    const normalizedRightAnswer = rightAnswer.map(normalizeString);
-    const comparisonResult = normalizedUserInputArray.map((word, index) => {
-      return {
-        word,
-        correct: normalizedRightAnswer[index] === word,
-      };
-    });
-    setFinalResult(comparisonResult);
-  };
+      const comparisonResult = normalizedUserInputArray.map((word, index) => {
+        return {
+          word,
+          correct: normalizedRightAnswer[index] === word,
+        };
+      });
+
+      setFinalResult(comparisonResult);
+    };
+
+    handleComparison();
+  }, [result, setFinalResult]);
+
+  //   useEffect(()=>{
+  //     handleComparison()
+  //   },[result])
+
+  // const handleComparison = async () => {
+  //   const rightAnswer = question.split(' ');  
+  //   const userInput = result ? result.split(' ') : [];
+  //   const normalizeString = (str) => str.toLowerCase();
+  //   console.log('userInput',userInput)
+  //   const normalizedUserInputArray = userInput.map(normalizeString);
+  //   const normalizedRightAnswer = rightAnswer.map(normalizeString);
+  //   const comparisonResult = normalizedUserInputArray.map((word, index) => {
+  //     return {
+  //       word,
+  //       correct: normalizedRightAnswer[index] === word,
+  //     };
+  //   });
+  //   setFinalResult(comparisonResult);
+
+  // };
 // console.log(finalResult)
   return (
     <View style={styles.container}>
@@ -136,9 +158,6 @@ const SpeakingQuestion = ({
         }</Text>
         </View>
       ) : null}
-        
-
-
                 {/* <Button title="So sánh" onPress={handleComparison}/> */}
 
       </View>

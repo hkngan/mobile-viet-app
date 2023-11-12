@@ -24,6 +24,8 @@ const Login = () => {
 
     const authContext = useContext(AuthContext)
     const state = authContext.state
+    const accessToken = state.accessToken
+    console.log('Login accessToken:', accessToken)
     const setState = authContext.setState
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
