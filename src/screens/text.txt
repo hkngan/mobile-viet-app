@@ -12,3 +12,21 @@
 //   const handleComparisonButtonPress = () => {
 //     handleComparison();
 // };
+    const handleComparison = () => {
+      const question = currentQuestion.lesson.question
+      const rightAnswer = question.split(' ');
+      const userInput = result ? result.split(' ') : [];
+      const normalizeString = (str) => str.toLowerCase();
+    const normalizedUserInputArray = userInput.map(normalizeString);
+    const normalizedRightAnswer = rightAnswer.map(normalizeString);
+    const comparisonResult = normalizedUserInputArray.map((word, index) => {
+      return {
+        word,
+        correct: normalizedRightAnswer[index] === word,
+      };
+    });
+    setFinalResult(comparisonResult);
+  };
+   const onRecordingFinished = () => {
+      setIsCheckButtonEnabled(true);
+   };

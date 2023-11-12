@@ -1,8 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {WelcomeScreen, Login, Registration, LearningLesson, StudyView, ImageQuestion, MultipleQuestion, FillQuestion, ListeningQuestion, SpeakingQuestion} from '../screens';
-import DrawerNavigation from './DrawerNavigation';
-
+import {WelcomeScreen, Login, Registration, LearningLesson, StudyView, ImageQuestion, MultipleQuestion, FillQuestion, ListeningQuestion, SpeakingQuestion, EditProfile} from '../screens';
+import BottomTab from './TabNavigation';
 const Stack = createStackNavigator();
 
 const StackNavigation = () => {
@@ -57,8 +56,13 @@ const StackNavigation = () => {
         options={{headerShown: false}}
       />
       <Stack.Screen
-        name="DrawerNavigation"
-        component={DrawerNavigation}
+        name="BottomTab"
+        component={BottomTab}
+        options={{headerShown: false}}
+      />
+       <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
         options={{headerShown: false}}
       />
     </Stack.Navigator>

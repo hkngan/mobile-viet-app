@@ -9,7 +9,7 @@ import {
   Text,
   Platform,
   Alert,
-  ImageBackground
+  Image
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -18,10 +18,11 @@ import { Dropdown } from "react-native-element-dropdown";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { COLORS, FONTSIZE, SPACING } from "../themes/themes";
 import { Header, UIButton, Input } from "../components";
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome/'
-import { faUser } from '@fortawesome/free-solid-svg-icons/faUser'
 import ImagePicker from 'react-native-image-crop-picker';
 import config from '../../config';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome/'
+import { faUser,faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import AnnouceAlert from "../components/AnnouceAlert";
 
 const Registration = () => {
   const navigation = useNavigation()
@@ -35,11 +36,22 @@ const Registration = () => {
   const [selectNational, setSelectNational] = useState(null);
   const [isFocus, setIsFocus] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null)
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [checkedGender, setCheckedGender] = useState("");
 
   const IPV4_ADDRESS = config.extra.IPV4
   const PORT = config.extra.PORT
+
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+
+  const onPressContinue = () => {
+    setShowAlert(false);
+  };
+
+  const togglePasswordVisibility = () => {
+  setIsPasswordVisible(!isPasswordVisible);
+};
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -178,7 +190,7 @@ const handleUploadImage = async () => {
     }
   };
 
-  console.log( name, email, phone, checkedGender, selectNational, selectedDate, password)
+  // console.log( name, email, phone, checkedGender, selectNational, selectedDate, password)
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -190,17 +202,14 @@ const handleUploadImage = async () => {
         </View>
         <ScrollView>
           <View style={styles.content}>
-            <TouchableOpacity onPress={handleUploadImage}>
-              <ImageBackground
-                source={userImage}
-                style={styles.imgInput}
-              >
+            <TouchableOpacity onPress={handleUploadImage} style={{marginVertical: SPACING.space_18}}>
               {userImage ? (
-                null
-              ) : (              
+                <Image
+                    source= {userImage}
+                    style={styles.imgInput}
+                    />              ) : (              
               <FontAwesomeIcon style={{alignSelf:'center'}} icon={faUser} color={COLORS.Black} size={50}/>
               )}
-              </ImageBackground>
             </TouchableOpacity>
             <Input
               placeholder="Fullname"
@@ -265,25 +274,33 @@ const handleUploadImage = async () => {
               }}
             />
             <View style={styles.dateContainer}>
-            <TouchableOpacity onPress={showDatePicker}>
-              <Text style={styles.dateText}>Choose your birth</Text>
-            </TouchableOpacity>     
-         
-              <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="date"
-                onConfirm={handleConfirm}
-                onCancel={hideDatePicker}
-              />
+          <TouchableOpacity onPress={showDatePicker}>
+            <Text style={styles.inputContainer}>
+              Your birthday: {selectedDate ? new Date(selectedDate).toISOString().slice(0, 10): null}
+            </Text>
+          </TouchableOpacity>
+
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+          />
             </View>
-            <Input
-              placeholder="Password"
-              heightInput={50}
-              widthInput={WIDTH * 0.7}
-              secureTextEntry={true}
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-            />
+            <View style={styles.password}>
+                <Input
+                  placeholder="Password"
+                  heightInput={50}
+                  widthInput={WIDTH * 0.7}
+                  secureTextEntry={!isPasswordVisible}
+                  value={password}
+                  onChangeText={(text) => setPassword(text)}
+                />
+                <TouchableOpacity onPress={togglePasswordVisibility} style={styles.iconEye}>
+                    <FontAwesomeIcon icon={isPasswordVisible ? faEye : faEyeSlash} size={20} color="black" />
+                </TouchableOpacity>
+            </View>
+            
             <UIButton
               title="sign up"
               backgroundColor="#0A6EBD"
@@ -292,6 +309,11 @@ const handleUploadImage = async () => {
               event={handleRegister}
             />
           </View>
+          <AnnouceAlert
+                 title={'Incorrect email or password'}
+                 isVisible={showAlert}
+                 onNextQuestion={onPressContinue}
+                />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -324,8 +346,12 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     justifyContent: "center",
     alignContent: "center",
-    marginVertical: SPACING.space_10,
+    marginVertical: SPACING.space_16,
   },
+  password:{
+    flexDirection: 'row',
+    alignItems: 'center'
+},
   Camicon: {
     alignSelf: "center",
   },
@@ -468,4 +494,9 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: "center",
   },
+  iconEye:{
+    position: 'absolute',
+    right: 0,
+    marginHorizontal: SPACING.space_16
+}
 });

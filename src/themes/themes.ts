@@ -42,11 +42,13 @@ interface Spacing {
     Brown: string;
     DarkGrey: string;
     Blue: string;
+    DarkBlue: string
     LightBlue: string;
     LightBlue1: string;
     Yellow: string;
     Yellow1: string;
     Yellow2: string;
+    Yellow3:string;
     PinkRGBA75: string,
     White: string;
     WhiteRGBA75: string;
@@ -68,19 +70,21 @@ interface Spacing {
     RedRGBA0: 'rgba(208, 21, 34, 0.8)',
     Brown: '#EBE3D5',
     DarkGrey: '#0b0b0b',
-    Blue: '#0A6EBD',
-    LightBlue: '#D2E9E9',
+    Blue: '#39A7FF',
+    DarkBlue: '#0C356A',
+    LightBlue: '#E0F4FF',
     LightBlue1: '#AEDEFC',
     Yellow: 'rgba(255, 162, 0, 0.2)',
     Yellow1: '#F6BA6F',
     Yellow2: 'rgba(255, 162, 0, 0.9)',
+    Yellow3: '#F0DE36',
     PinkRGBA75: '#FF9B9B',
     White: '#FFFFFF',
     WhiteRGBA75: 'rgba(255,255,255,0.75)',
     WhiteRGBA50: 'rgba(255,255,255,0.50)',
     WhiteRGBA32: 'rgba(255,255,255,0.32)',
     WhiteRGBA15: 'rgba(255,255,255,0.49)',
-    Beige: '#F5F7F8',
+    Beige: '#EEEDED',
     Green: '#ADE4DB',
     Green1: '#64CCC5',
     Green2: '#96C291'

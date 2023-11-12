@@ -9,6 +9,7 @@ import MultipleQuestion from "./MultipleQuestion";
 import FillQuestion from "./FillQuestion";
 import ListeningQuestion from "./ListeningQuestion";
 import SpeakingQuestion from "./SpeakingQuestion";
+import EditProfile from "./EditProfile";
 export {
     Login, 
     WelcomeScreen, 
@@ -20,5 +21,6 @@ export {
     MultipleQuestion,
     FillQuestion,
     ListeningQuestion,
-    SpeakingQuestion
+    SpeakingQuestion,
+    EditProfile
 }

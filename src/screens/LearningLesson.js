@@ -13,22 +13,24 @@ import { useIsFocused } from '@react-navigation/native';
 
 const LearningLesson = () => {
     const [topics, setTopics] = useState([]);
-    const {state} = useContext(AuthContext);
+    const [userInfo, setUserInfo] = useState([])
+
     const {setTopic} = useContext(TopicContext)
+    const {state} = useContext(AuthContext);
     const accessToken = state.accessToken
     const navigation = useNavigation();
+    
     const isFocused = useIsFocused();
 
-    const openDrawer = () => {
-        navigation.dispatch(DrawerActions.openDrawer());
+    // const openDrawer = () => {
+    //     navigation.dispatch(DrawerActions.openDrawer());
 
-    };    
+    // };    
     
     const IPV4_ADDRESS = config.extra.IPV4
     const PORT = config.extra.PORT
     useEffect(() => {
         if (isFocused) {
-
          const getTopicData = async () => {
             try {
                 let response = await axios.get(`http://${IPV4_ADDRESS}:${PORT}/api/v1/topic`, {
@@ -41,19 +43,32 @@ const LearningLesson = () => {
                 console.log('Error in getTopicData func', error);
             }
         }
-    
+        const getData =  async () => {
+      
+            try {
+              let res = await axios.get(`http://${IPV4_ADDRESS}:${PORT}/api/v1/account/me/info`,{
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                  }
+                })
+                setUserInfo(res.data)
+            } catch (error) {
+              console.log('Error in getDataUser function', error)
+            }
+          }
+          
         if (accessToken) {
          getTopicData();
+         getData()
         }
         }
     }, [isFocused]);
+    // console.log(userInfo)
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <Text style={styles.logo}>VIETGO</Text>
-                <TouchableOpacity onPress={openDrawer} style={styles.drawerButton}>
-                    <FontAwesomeIcon icon={faUser} color={COLORS.White} size={25}/>
-                </TouchableOpacity>
+                <Text style={[styles.logo, {fontSize: FONTSIZE.size_18, fontWeight: '600'}]}>Hello, {userInfo.fullName}</Text>
+                <Text style={[styles.logo, {fontSize: FONTSIZE.size_24,fontWeight: 'bold',}]}>Let's learn together!</Text>
             </View>
             <View style={styles.line}/>
             <ScrollView>
@@ -121,17 +136,15 @@ const WIDTH = Dimensions.get('window').width
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.Beige,
+        backgroundColor: COLORS.LightBlue,
     },
     header: {
-        backgroundColor: COLORS.Black,
+        backgroundColor: COLORS.LightBlue,
         width: WIDTH,
         height: WIDTH*0.15,
         paddingVertical:SPACING.space_15,
         paddingHorizontal: SPACING.space_20,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',        
+        // justifyContent: 'center',
         borderBottomWidth: 1,
         borderBottomColor: COLORS.WhiteRGBA50,
         shadowColor: COLORS.Black,
@@ -189,13 +202,9 @@ const styles = StyleSheet.create({
         marginVertical: SPACING.space_10 -5
     },
     logo:{
-        color: COLORS.White,
-        // fontWeight: 'bold',
-        fontSize: FONTSIZE.size_24,
-        textShadowColor: COLORS.LightBlack,
-        alignSelf: 'center',
-        letterSpacing: 4,
+        color: COLORS.Black,
         fontFamily: 'Dosis-Bold'
+        // alignSelf: 'flex-start',
     },
     drawerButton:{
         position: 'absolute',

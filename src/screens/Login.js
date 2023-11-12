@@ -11,6 +11,7 @@ import { AuthContext } from '../context/authContext';
 import { Header, UIButton } from '../components';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome/'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
+import AnnouceAlert from '../components/AnnouceAlert';
 
 const HEIGHT = Dimensions.get('window').height
 const WIDTH = Dimensions.get('window').width
@@ -32,6 +33,13 @@ const Login = () => {
     const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
+
+  const [showAlert, setShowAlert] = useState(false);
+
+  const onPressContinue = () => {
+    setShowAlert(false);
+  };
+
     const handleLogin = async () => {
         try {
             if(!username || !password){
@@ -45,9 +53,9 @@ const Login = () => {
             setState(data)
             console.log(data)
             await AsyncStorage.setItem('@auth', JSON.stringify(data))
-            navigation.navigate('DrawerNavigation', { screen: 'LearningLesson' });
+            navigation.navigate('BottomTab', { screen: 'LearningLesson' });
         } catch (error) {
-            alert(error.response.data.message)
+            setShowAlert(true)
             console.log(error)
         }
     }
@@ -92,6 +100,11 @@ const Login = () => {
                         event={handleLogin}
                         />
                 </View>
+                <AnnouceAlert
+                 title={'Incorrect email or password'}
+                 isVisible={showAlert}
+                 onNextQuestion={onPressContinue}
+                />
             </SafeAreaView>
         </ScrollView>
     );

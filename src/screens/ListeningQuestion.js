@@ -14,7 +14,7 @@ const ListeningQuestion = ({ question, answers, selectedAnswer, onAnswerSelectio
   const playSound = () => {
     const originalPath = audio.url;
     const updatedPath = originalPath.replace(/\\/g, "/");
-    console.log(updatedPath)
+    // console.log(updatedPath)
     const sound = new Sound(`http://${IPV4_ADDRESS}:${PORT}/${updatedPath}`, null, (error) => {
       if (error) {
         console.error('Error loading sound: ', error);

@@ -34,7 +34,7 @@ const StudyView = () => {
     const [selectedAnswer, setSelectedAnswer] = useState(null);
     const [showAlert, setShowAlert] = useState(false);
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
-  
+
     const currentQuestion = questionList[currentQuestionIndex];
 
     const shuffle = (array) => {
@@ -134,8 +134,6 @@ const StudyView = () => {
       }
     };
 
-
-  
     const renderQuestionTypeComponent = () => {
       try {
         if (currentQuestion && currentQuestion.lesson) {
@@ -181,6 +179,7 @@ const StudyView = () => {
               return (
                 <SpeakingQuestion
                   question={currentQuestion.lesson.question}  
+                  
                 />
               );
             default:
@@ -213,7 +212,7 @@ const StudyView = () => {
                 onPress={onPressCheck}
                 disabled={!isCheckButtonEnabled}
               >
-                <Text style={styles.textButton}>Check</Text>
+                <Text style={styles.textButton}>Next</Text>
               </TouchableOpacity>) 
               :
               (

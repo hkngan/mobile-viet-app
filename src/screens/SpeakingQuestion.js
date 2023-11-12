@@ -54,6 +54,7 @@ const SpeakingQuestion = ({
     try {
       await Voice.stop()
       setRecording(false)
+      handleComparison()
     } catch (error) {
       console.log('Error in startRecording function', error)
     }
@@ -89,7 +90,7 @@ const SpeakingQuestion = ({
     });
     setFinalResult(comparisonResult);
   };
-console.log(finalResult)
+// console.log(finalResult)
   return (
     <View style={styles.container}>
       <View style={styles.questionContainer}>
@@ -133,13 +134,12 @@ console.log(finalResult)
           
         ))
         }</Text>
-        <Text style={styles.questionText}>Câu trả lời đúng: {question}</Text>
         </View>
       ) : null}
         
 
 
-                <Button title="So sánh" onPress={handleComparison}/>
+                {/* <Button title="So sánh" onPress={handleComparison}/> */}
 
       </View>
     </View>
