@@ -1,6 +1,6 @@
 export default {
     extra: {
-        IPV4: '192.168.1.4',
+        IPV4: '172.30.40.225',
         PORT: 4000
     },
   };

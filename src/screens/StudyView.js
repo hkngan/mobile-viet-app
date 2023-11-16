@@ -44,6 +44,7 @@ const StudyView = () => {
 
   const currentQuestion = questionList[currentQuestionIndex];
 
+  
   const shuffle = array => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -104,6 +105,7 @@ const StudyView = () => {
         setAnswerChecked(false);
         setShowAlert(false);
         setIsCheckButtonEnabled(false);
+      
       } else {
         setShowAlert(false)
         setShowAlertFinal(true)

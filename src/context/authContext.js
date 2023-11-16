@@ -9,7 +9,7 @@ const AuthProvider = ({children}) => {
         accessToken: ''
     })
 
-    axios.defaults.baseURL = 'http://192.168.1.4:4000/api/v1'
+    axios.defaults.baseURL = 'http://10.13.128.27:4000/api/v1'
     useEffect(() => {
         const loadStorageData = async () => {
             let data = await AsyncStorage.getItem('@auth')

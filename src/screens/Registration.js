@@ -162,7 +162,7 @@ const handleUploadImage = async () => {
         );
       }
       const response = await axios.post(
-        "http://192.168.1.4:4000/api/v1/file/upload/single",
+        "http://10.13.128.27:4000/api/v1/file/upload/single",
         userAvatar,
         {
           headers: {
@@ -173,7 +173,7 @@ const handleUploadImage = async () => {
       const avatar = response.data.id
       console.log(avatar, name, email, phone, checkedGender, selectNational, selectedDate, password)
 
-      const {data} = await axios.post('http://192.168.1.4:4000/api/v1/account', {
+      const {data} = await axios.post('http://10.13.128.27:4000/api/v1/account', {
         fullName: name,
         phone: phone,
         email: email,
